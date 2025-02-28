@@ -1,0 +1,29 @@
+Total Missing Percentage: 0.98%
+
+Statistical Summary of Missing Values:
+symboling             0
+normalized-losses    37
+make                  0
+fuel-type             0
+aspiration            0
+num-of-doors          2
+body-style            0
+drive-wheels          0
+engine-location       0
+wheel-base            0
+length                0
+width                 0
+height                0
+curb-weight           0
+engine-type           0
+num-of-cylinders      0
+engine-size           0
+fuel-system           0
+bore                  4
+stroke                4
+compression-ratio     0
+horsepower            2
+peak-rpm              2
+city-mpg              0
+highway-mpg           0
+price                 0

@@ -1,0 +1,16 @@
+Categorical Variable,p-value
+normalized-losses,0.55
+make,0.1
+fuel-type,0.39
+aspiration,0.25
+num-of-doors,0.29
+body-style,0.21
+drive-wheels,0.27
+engine-location,0.2
+engine-type,0.18
+num-of-cylinders,0.03
+fuel-system,0.08
+bore,0.52
+stroke,0.0
+horsepower,0.0
+peak-rpm,0.05

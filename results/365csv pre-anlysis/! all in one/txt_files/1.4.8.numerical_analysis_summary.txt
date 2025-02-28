@@ -1,0 +1,234 @@
+Numerical Variable Analysis Report
+========================================================================================================================
+
+
+### Analysis for 'symboling'  ###
+| Statistic          |    Overall |
+|--------------------|------------|
+| Count              | 201        |
+| Mean               |   0.840796 |
+| Trimmed Mean (IQR) |   0.840796 |
+| MAD                |   1.03156  |
+| Std                |   1.2548   |
+| Min                |  -2        |
+| 25%                |   0        |
+| 50%                |   1        |
+| 75%                |   2        |
+| Max                |   3        |
+| Mode               |   0        |
+| Range              |   5        |
+| IQR                |   2        |
+| Variance           |   1.57453  |
+| Skewness           |   0.19737  |
+| Kurtosis           |  -0.707178 |
+
+
+### Analysis for 'wheel-base'  ###
+| Statistic          |    Overall |
+|--------------------|------------|
+| Count              | 201        |
+| Mean               |  98.797    |
+| Trimmed Mean (IQR) |  98.5157   |
+| MAD                |   4.71578  |
+| Std                |   6.06637  |
+| Min                |  86.6      |
+| 25%                |  94.5      |
+| 50%                |  97        |
+| 75%                | 102.4      |
+| Max                | 120.9      |
+| Mode               |  93.7      |
+| Range              |  34.3      |
+| IQR                |   7.9      |
+| Variance           |  36.8008   |
+| Skewness           |   1.03126  |
+| Kurtosis           |   0.948445 |
+
+
+### Analysis for 'length'  ###
+| Statistic          |     Overall |
+|--------------------|-------------|
+| Count              | 201         |
+| Mean               | 174.201     |
+| Trimmed Mean (IQR) | 174.367     |
+| MAD                |   9.59014   |
+| Std                |  12.3222    |
+| Min                | 141.1       |
+| 25%                | 166.8       |
+| 50%                | 173.2       |
+| 75%                | 183.5       |
+| Max                | 208.1       |
+| Mode               | 157.3       |
+| Range              |  67         |
+| IQR                |  16.7       |
+| Variance           | 151.836     |
+| Skewness           |   0.154446  |
+| Kurtosis           |  -0.0651916 |
+
+
+### Analysis for 'width'  ###
+| Statistic          |    Overall |
+|--------------------|------------|
+| Count              | 201        |
+| Mean               |  65.8891   |
+| Trimmed Mean (IQR) |  65.6321   |
+| MAD                |   1.64408  |
+| Std                |   2.10147  |
+| Min                |  60.3      |
+| 25%                |  64.1      |
+| 50%                |  65.5      |
+| 75%                |  66.6      |
+| Max                |  72        |
+| Mode               |  63.8      |
+| Range              |  11.7      |
+| IQR                |   2.5      |
+| Variance           |   4.41618  |
+| Skewness           |   0.875029 |
+| Kurtosis           |   0.678655 |
+
+
+### Analysis for 'height'  ###
+| Statistic          |     Overall |
+|--------------------|-------------|
+| Count              | 201         |
+| Mean               |  53.7667    |
+| Trimmed Mean (IQR) |  53.7667    |
+| MAD                |   2.01061   |
+| Std                |   2.44782   |
+| Min                |  47.8       |
+| 25%                |  52         |
+| 50%                |  54.1       |
+| 75%                |  55.5       |
+| Max                |  59.8       |
+| Mode               |  50.8       |
+| Range              |  12         |
+| IQR                |   3.5       |
+| Variance           |   5.99183   |
+| Skewness           |   0.0291733 |
+| Kurtosis           |  -0.432908  |
+
+
+### Analysis for 'curb-weight'  ###
+| Statistic          |        Overall |
+|--------------------|----------------|
+| Count              |    201         |
+| Mean               |   2555.67      |
+| Trimmed Mean (IQR) |   2540.49      |
+| MAD                |    423.695     |
+| Std                |    517.297     |
+| Min                |   1488         |
+| 25%                |   2169         |
+| 50%                |   2414         |
+| 75%                |   2926         |
+| Max                |   4066         |
+| Mode               |   2385         |
+| Range              |   2578         |
+| IQR                |    757         |
+| Variance           | 267596         |
+| Skewness           |      0.705804  |
+| Kurtosis           |      0.0349156 |
+
+
+### Analysis for 'engine-size'  ###
+| Statistic          |    Overall |
+|--------------------|------------|
+| Count              |  201       |
+| Mean               |  126.876   |
+| Trimmed Mean (IQR) |  120.173   |
+| MAD                |   30.0505  |
+| Std                |   41.5468  |
+| Min                |   61       |
+| 25%                |   98       |
+| 50%                |  120       |
+| 75%                |  141       |
+| Max                |  326       |
+| Mode               |   92       |
+| Range              |  265       |
+| IQR                |   43       |
+| Variance           | 1726.14    |
+| Skewness           |    1.97914 |
+| Kurtosis           |    5.49749 |
+
+
+### Analysis for 'compression-ratio'  ###
+| Statistic          |   Overall |
+|--------------------|-----------|
+| Count              | 201       |
+| Mean               |  10.1643  |
+| Trimmed Mean (IQR) |   8.90471 |
+| MAD                |   2.36965 |
+| Std                |   4.00497 |
+| Min                |   7       |
+| 25%                |   8.6     |
+| 50%                |   9       |
+| 75%                |   9.4     |
+| Max                |  23       |
+| Mode               |   9       |
+| Range              |  16       |
+| IQR                |   0.8     |
+| Variance           |  16.0397  |
+| Skewness           |   2.58446 |
+| Kurtosis           |   5.06887 |
+
+
+### Analysis for 'city-mpg'  ###
+| Statistic          |    Overall |
+|--------------------|------------|
+| Count              | 201        |
+| Mean               |  25.1791   |
+| Trimmed Mean (IQR) |  24.9497   |
+| MAD                |   5.10151  |
+| Std                |   6.42322  |
+| Min                |  13        |
+| 25%                |  19        |
+| 50%                |  24        |
+| 75%                |  30        |
+| Max                |  49        |
+| Mode               |  31        |
+| Range              |  36        |
+| IQR                |  11        |
+| Variance           |  41.2578   |
+| Skewness           |   0.680433 |
+| Kurtosis           |   0.753968 |
+
+
+### Analysis for 'highway-mpg'  ###
+| Statistic          |    Overall |
+|--------------------|------------|
+| Count              | 201        |
+| Mean               |  30.6866   |
+| Trimmed Mean (IQR) |  30.3586   |
+| MAD                |   5.39393  |
+| Std                |   6.81515  |
+| Min                |  16        |
+| 25%                |  25        |
+| 50%                |  30        |
+| 75%                |  34        |
+| Max                |  54        |
+| Mode               |  25        |
+| Range              |  38        |
+| IQR                |   9        |
+| Variance           |  46.4463   |
+| Skewness           |   0.549507 |
+| Kurtosis           |   0.561171 |
+
+
+### Analysis for 'price'  ###
+| Statistic          |         Overall |
+|--------------------|-----------------|
+| Count              |   201           |
+| Mean               | 13207.1         |
+| Trimmed Mean (IQR) | 11503.2         |
+| MAD                |  5841.19        |
+| Std                |  7947.07        |
+| Min                |  5118           |
+| 25%                |  7775           |
+| 50%                | 10295           |
+| 75%                | 16500           |
+| Max                | 45400           |
+| Mode               |  5572           |
+| Range              | 40282           |
+| IQR                |  8725           |
+| Variance           |     6.31559e+07 |
+| Skewness           |     1.80968     |
+| Kurtosis           |     3.23154     |
+

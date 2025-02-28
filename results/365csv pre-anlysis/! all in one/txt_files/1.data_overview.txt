@@ -1,0 +1,44 @@
+
+=== Data Overview Table ===
+
+
+Overview for Data Type: int64
+
+|    | Column Name   | Data Type   |   Unique Count |   Missing Count |   Missing Percentage | Missing Value Category   |
+|----|---------------|-------------|----------------|-----------------|----------------------|--------------------------|
+|  0 | symboling     | int64       |              6 |               0 |                    0 | No Missing Values        |
+|  1 | curb-weight   | int64       |            169 |               0 |                    0 | No Missing Values        |
+|  2 | engine-size   | int64       |             43 |               0 |                    0 | No Missing Values        |
+|  3 | city-mpg      | int64       |             29 |               0 |                    0 | No Missing Values        |
+|  4 | highway-mpg   | int64       |             30 |               0 |                    0 | No Missing Values        |
+|  5 | price         | int64       |            186 |               0 |                    0 | No Missing Values        |
+
+Overview for Data Type: float64
+
+|    | Column Name       | Data Type   |   Unique Count |   Missing Count |   Missing Percentage | Missing Value Category   |
+|----|-------------------|-------------|----------------|-----------------|----------------------|--------------------------|
+|  0 | wheel-base        | float64     |             52 |               0 |                    0 | No Missing Values        |
+|  1 | length            | float64     |             73 |               0 |                    0 | No Missing Values        |
+|  2 | width             | float64     |             43 |               0 |                    0 | No Missing Values        |
+|  3 | height            | float64     |             49 |               0 |                    0 | No Missing Values        |
+|  4 | compression-ratio | float64     |             32 |               0 |                    0 | No Missing Values        |
+
+Overview for Data Type: object
+
+|    | Column Name       | Data Type   |   Unique Count |   Missing Count |   Missing Percentage | Missing Value Category   |
+|----|-------------------|-------------|----------------|-----------------|----------------------|--------------------------|
+|  0 | normalized-losses | object      |             52 |               0 |                    0 | No Missing Values        |
+|  1 | make              | object      |             22 |               0 |                    0 | No Missing Values        |
+|  2 | fuel-type         | object      |              2 |               0 |                    0 | No Missing Values        |
+|  3 | aspiration        | object      |              2 |               0 |                    0 | No Missing Values        |
+|  4 | num-of-doors      | object      |              3 |               0 |                    0 | No Missing Values        |
+|  5 | body-style        | object      |              5 |               0 |                    0 | No Missing Values        |
+|  6 | drive-wheels      | object      |              3 |               0 |                    0 | No Missing Values        |
+|  7 | engine-location   | object      |              2 |               0 |                    0 | No Missing Values        |
+|  8 | engine-type       | object      |              6 |               0 |                    0 | No Missing Values        |
+|  9 | num-of-cylinders  | object      |              7 |               0 |                    0 | No Missing Values        |
+| 10 | fuel-system       | object      |              8 |               0 |                    0 | No Missing Values        |
+| 11 | bore              | object      |             39 |               0 |                    0 | No Missing Values        |
+| 12 | stroke            | object      |             37 |               0 |                    0 | No Missing Values        |
+| 13 | horsepower        | object      |             59 |               0 |                    0 | No Missing Values        |
+| 14 | peak-rpm          | object      |             23 |               0 |                    0 | No Missing Values        |
