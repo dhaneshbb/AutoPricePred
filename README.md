@@ -33,8 +33,8 @@
 
 ```
 ├── data
-│   ├── 1.1 raw               # Raw datasets (auto_imports.csv)
-│   └── 1.2 processed         # Processed training/testing splits
+│   ├── raw                   # Raw datasets (auto_imports.csv)
+│   └── processed             # Processed training/testing splits
 ├── docs                      # Problem statement and documentation
 ├── notebooks                 # Jupyter notebooks for analysis and modeling
 ├── report                    # Final Report.md and supporting files

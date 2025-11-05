@@ -55,3 +55,6 @@ results/365csv*
 
 # Project documentation (not tracked)
 CLAUDE.md
+
+# Claude Code settings
+.claude/
