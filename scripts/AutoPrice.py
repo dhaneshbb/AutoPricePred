@@ -1,5 +1,10 @@
 import pandas as pd
-data = pd.read_csv(r'D:\datamites\AutoPricePred\data\1.1 raw\auto_imports.csv')
+from pathlib import Path
+
+# Get project root directory (parent of scripts directory)
+PROJECT_ROOT = Path(__file__).parent.parent
+DATA_PATH = PROJECT_ROOT / "data" / "1.1 raw" / "auto_imports.csv"
+data = pd.read_csv(DATA_PATH)
 
 from tabulate import tabulate
 from IPython.display import display

@@ -1,7 +1,0 @@
-| body-style   |   Count |   Percentage |
-|:-------------|--------:|-------------:|
-| sedan        |      94 |        46.77 |
-| hatchback    |      68 |        33.83 |
-| wagon        |      25 |        12.44 |
-| hardtop      |       8 |         3.98 |
-| convertible  |       6 |         2.99 |
