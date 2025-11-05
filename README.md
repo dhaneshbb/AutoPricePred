@@ -42,7 +42,7 @@
 │   ├── 365csv pre-analysis   # EDA outputs (statistics, visualizations)
 │   ├── figures               # Saved plots (boxplots, histograms)
 │   └── models                # Serialized models (final_lasso_model.joblib)
-├── scripts                   # Utility scripts (AutoPrice.py, utility.py)
+├── src                       # Source code modules (utils, statistical_analysis, model_evaluation)
 ├── LICENSE
 ├── README.md
 └── requirements.txt          # Python dependencies
