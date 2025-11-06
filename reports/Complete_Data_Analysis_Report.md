@@ -3,7 +3,6 @@
 **Project:** Auto Price Prediction Using 1985 Auto Imports Database
 **Dataset:** 205 instances, 26 attributes
 **Final Model:** Lasso Regression (alpha=10) with R² = 0.917, RMSE = 1,987
-**Date:** November 2025
 
 ---
 
@@ -1100,3 +1099,4 @@ This project extensively utilized the [insightfulpy](https://github.com/dhaneshb
 ---
 
 **End of Report**
+
