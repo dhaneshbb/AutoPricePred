@@ -27,13 +27,10 @@ ENV/
 env/
 
 # Data & Results (generated outputs - keep models)
-results/figures/
+!results/figures/GALLERY.md
 results/**/visualization/
-results/**/*.png
 results/**/*.html
 results/**/*.csv
-!results/models/
-!results/models/*.joblib
 
 # IDE
 .vscode/
@@ -52,9 +49,3 @@ results/365csv*
 
 # Backup folder
 .backup/
-
-# Project documentation (not tracked)
-CLAUDE.md
-
-# Claude Code settings
-.claude/

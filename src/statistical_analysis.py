@@ -2,13 +2,13 @@
 Statistical analysis functions for data exploration and correlation analysis.
 """
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
-from scipy.stats import shapiro, kstest, spearmanr, skew, kurtosis
-from statsmodels.stats.outliers_influence import variance_inflation_factor
 from IPython.display import display
+from scipy.stats import kstest, kurtosis, shapiro, skew, spearmanr
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 
 def normality_test_with_skew_kurt(df):
@@ -23,33 +23,39 @@ def normality_test_with_skew_kurt(df):
         if len(col_data) >= 3:
             if len(col_data) <= 5000:
                 stat, p_value = shapiro(col_data)
-                test_used = 'Shapiro-Wilk'
+                test_used = "Shapiro-Wilk"
             else:
-                stat, p_value = kstest(col_data, 'norm', args=(col_data.mean(), col_data.std()))
-                test_used = 'Kolmogorov-Smirnov'
+                stat, p_value = kstest(
+                    col_data, "norm", args=(col_data.mean(), col_data.std())
+                )
+                test_used = "Kolmogorov-Smirnov"
             col_skewness = skew(col_data)
             col_kurtosis = kurtosis(col_data)
             result = {
-                'Column': col,
-                'Test': test_used,
-                'Statistic': stat,
-                'p_value': p_value,
-                'Skewness': col_skewness,
-                'Kurtosis': col_kurtosis
+                "Column": col,
+                "Test": test_used,
+                "Statistic": stat,
+                "p_value": p_value,
+                "Skewness": col_skewness,
+                "Kurtosis": col_kurtosis,
             }
             if p_value > 0.05:
                 normal_cols.append(result)
             else:
                 not_normal_cols.append(result)
     normal_df = (
-        pd.DataFrame(normal_cols)
-        .sort_values(by='Column')
-        if normal_cols else pd.DataFrame(columns=['Column', 'Test', 'Statistic', 'p_value', 'Skewness', 'Kurtosis'])
+        pd.DataFrame(normal_cols).sort_values(by="Column")
+        if normal_cols
+        else pd.DataFrame(
+            columns=["Column", "Test", "Statistic", "p_value", "Skewness", "Kurtosis"]
+        )
     )
     not_normal_df = (
-        pd.DataFrame(not_normal_cols)
-        .sort_values(by='p_value', ascending=False)
-        if not_normal_cols else pd.DataFrame(columns=['Column', 'Test', 'Statistic', 'p_value', 'Skewness', 'Kurtosis'])
+        pd.DataFrame(not_normal_cols).sort_values(by="p_value", ascending=False)
+        if not_normal_cols
+        else pd.DataFrame(
+            columns=["Column", "Test", "Statistic", "p_value", "Skewness", "Kurtosis"]
+        )
     )
     print("\nNormal Columns (p > 0.05):")
     display(normal_df)
@@ -58,63 +64,90 @@ def normality_test_with_skew_kurt(df):
     return normal_df, not_normal_df
 
 
-def spearman_correlation_with_target(data, non_normal_cols, target_col='TARGET', plot=True, table=True):
+def spearman_correlation_with_target(
+    data, non_normal_cols, target_col="TARGET", plot=True, table=True
+):
     """
     Calculate Spearman correlation between non-normal columns and target variable.
     """
     if not pd.api.types.is_numeric_dtype(data[target_col]):
-        raise ValueError(f"Target column '{target_col}' must be numeric. Please encode it before running this test.")
+        raise ValueError(
+            f"Target column '{target_col}' must be numeric. Please encode it before running this test."
+        )
     correlation_results = {}
     for col in non_normal_cols:
         if col not in data.columns:
             continue
-        coef, p_value = spearmanr(data[col], data[target_col], nan_policy='omit')
-        correlation_results[col] = {'Spearman Coefficient': coef, 'p-value': p_value}
+        coef, p_value = spearmanr(data[col], data[target_col], nan_policy="omit")
+        correlation_results[col] = {"Spearman Coefficient": coef, "p-value": p_value}
     correlation_data = pd.DataFrame(correlation_results).T.dropna()
-    correlation_data = correlation_data.sort_values('Spearman Coefficient', ascending=False)
+    correlation_data = correlation_data.sort_values(
+        "Spearman Coefficient", ascending=False
+    )
     if target_col in correlation_data.index:
         correlation_data = correlation_data.drop(target_col)
-    positive_corr = correlation_data[correlation_data['Spearman Coefficient'] > 0]
-    negative_corr = correlation_data[correlation_data['Spearman Coefficient'] < 0]
+    positive_corr = correlation_data[correlation_data["Spearman Coefficient"] > 0]
+    negative_corr = correlation_data[correlation_data["Spearman Coefficient"] < 0]
     if table:
         print(f"\nPositive Spearman Correlations with Target ('{target_col}'):\n")
         for feature, stats in positive_corr.iterrows():
-            print(f"- {feature}: Correlation={stats['Spearman Coefficient']:.4f}, p-value={stats['p-value']:.4f}")
+            print(
+                f"- {feature}: Correlation={stats['Spearman Coefficient']:.4f}, p-value={stats['p-value']:.4f}"
+            )
         print(f"\nNegative Spearman Correlations with Target ('{target_col}'):\n")
         for feature, stats in negative_corr.iterrows():
-            print(f"- {feature}: Correlation={stats['Spearman Coefficient']:.4f}, p-value={stats['p-value']:.4f}")
+            print(
+                f"- {feature}: Correlation={stats['Spearman Coefficient']:.4f}, p-value={stats['p-value']:.4f}"
+            )
     if plot:
         plt.figure(figsize=(20, 8))
-        sns.barplot(x=correlation_data.index, y='Spearman Coefficient', data=correlation_data, palette='coolwarm')
-        plt.axhline(0, color='black', linestyle='--')
+        sns.barplot(
+            x=correlation_data.index,
+            y="Spearman Coefficient",
+            data=correlation_data,
+            palette="coolwarm",
+        )
+        plt.axhline(0, color="black", linestyle="--")
         plt.title(f"Spearman Correlation with Target ('{target_col}')", fontsize=16)
         plt.xlabel("Features", fontsize=14)
         plt.ylabel("Spearman Coefficient", fontsize=14)
-        plt.xticks(rotation=45, ha='right', fontsize=10)
+        plt.xticks(rotation=45, ha="right", fontsize=10)
         plt.subplots_adjust(bottom=0.3)
         plt.tight_layout()
         plt.show()
     return correlation_data
 
 
-def spearman_correlation(data, non_normal_cols, exclude_target=None, multicollinearity_threshold=0.8):
+def spearman_correlation(
+    data, non_normal_cols, exclude_target=None, multicollinearity_threshold=0.8
+):
     """
     Calculate Spearman correlation matrix and identify multicollinear pairs.
     """
     if non_normal_cols.empty:
-        print("\nNo non-normally distributed numerical columns found. Exiting Spearman Correlation.")
+        print(
+            "\nNo non-normally distributed numerical columns found. Exiting Spearman Correlation."
+        )
         return
-    selected_columns = non_normal_cols['Column'].tolist()
-    if exclude_target and exclude_target in selected_columns and pd.api.types.is_numeric_dtype(data[exclude_target]):
+    selected_columns = non_normal_cols["Column"].tolist()
+    if (
+        exclude_target
+        and exclude_target in selected_columns
+        and pd.api.types.is_numeric_dtype(data[exclude_target])
+    ):
         selected_columns.remove(exclude_target)
-    spearman_corr_matrix = data[selected_columns].corr(method='spearman')
+    spearman_corr_matrix = data[selected_columns].corr(method="spearman")
     multicollinear_pairs = []
     for i, col1 in enumerate(selected_columns):
-        for col2 in selected_columns[i+1:]:
+        for col2 in selected_columns[i + 1 :]:
             coef = spearman_corr_matrix.loc[col1, col2]
             if abs(coef) > multicollinearity_threshold:
                 multicollinear_pairs.append((col1, col2, coef))
-    print("\nVariables Exhibiting Multicollinearity (|Correlation| > {:.2f}):".format(multicollinearity_threshold))
+    print(
+        "\nVariables Exhibiting Multicollinearity (|Correlation| > {:.2f}):".format(
+            multicollinearity_threshold
+        )
+    )
     if multicollinear_pairs:
         for col1, col2, coef in multicollinear_pairs:
             print(f"- {col1} & {col2}: Correlation={coef:.4f}")
@@ -128,34 +161,42 @@ def spearman_correlation(data, non_normal_cols, exclude_target=None, multicollin
     sns.heatmap(
         spearman_corr_matrix,
         annot=annot_matrix,
-        fmt='',
-        cmap='coolwarm',
+        fmt="",
+        cmap="coolwarm",
         vmin=-1,
         vmax=1,
         linewidths=0.5,
         annot_kws={"size": annot_font_size},
-        cbar_kws={"shrink": 0.8}
+        cbar_kws={"shrink": 0.8},
     )
-    plt.title('Spearman Correlation Matrix', fontsize=18)
-    plt.xticks(rotation=45, ha='right', fontsize=12)
+    plt.title("Spearman Correlation Matrix", fontsize=18)
+    plt.xticks(rotation=45, ha="right", fontsize=12)
     plt.yticks(rotation=0, fontsize=12)
     plt.tight_layout()
     plt.show()
 
 
-def calculate_vif(data, exclude_target='TARGET', multicollinearity_threshold=5.0):
+def calculate_vif(data, exclude_target="TARGET", multicollinearity_threshold=5.0):
     """
     Calculate Variance Inflation Factor (VIF) for numerical features.
     """
-    numeric_data = data.select_dtypes(include=[np.number]).drop(columns=[exclude_target], errors='ignore').dropna()
+    numeric_data = (
+        data.select_dtypes(include=[np.number])
+        .drop(columns=[exclude_target], errors="ignore")
+        .dropna()
+    )
     vif_data = pd.DataFrame()
-    vif_data['Feature'] = numeric_data.columns
-    vif_data['VIF'] = [variance_inflation_factor(numeric_data.values, i)
-                       for i in range(numeric_data.shape[1])]
-    vif_data = vif_data.sort_values('VIF', ascending=False).reset_index(drop=True)
-    high_vif = vif_data[vif_data['VIF'] > multicollinearity_threshold]
-    low_vif = vif_data[vif_data['VIF'] <= multicollinearity_threshold]
-    print(f"\nVariance Inflation Factor (VIF) Scores (multicollinearity_threshold = {multicollinearity_threshold}):")
+    vif_data["Feature"] = numeric_data.columns
+    vif_data["VIF"] = [
+        variance_inflation_factor(numeric_data.values, i)
+        for i in range(numeric_data.shape[1])
+    ]
+    vif_data = vif_data.sort_values("VIF", ascending=False).reset_index(drop=True)
+    high_vif = vif_data[vif_data["VIF"] > multicollinearity_threshold]
+    low_vif = vif_data[vif_data["VIF"] <= multicollinearity_threshold]
+    print(
+        f"\nVariance Inflation Factor (VIF) Scores (multicollinearity_threshold = {multicollinearity_threshold}):"
+    )
     print("\nFeatures with VIF > threshold (High Multicollinearity):")
     if not high_vif.empty:
         print(high_vif.to_string(index=False))
@@ -166,4 +207,4 @@ def calculate_vif(data, exclude_target='TARGET', multicollinearity_threshold=5.0
         print(low_vif.to_string(index=False))
     else:
         print("None. All features exceed the VIF threshold.")
-    return vif_data, high_vif['Feature'].tolist()
+    return vif_data, high_vif["Feature"].tolist()

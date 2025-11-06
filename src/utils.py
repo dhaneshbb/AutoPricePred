@@ -2,9 +2,10 @@
 Utility functions for memory management and general operations.
 """
 
-import psutil
-import os
 import gc
+import os
+
+import psutil
 
 
 def memory_usage():
@@ -16,7 +17,7 @@ def memory_usage():
 
 def dataframe_memory_usage(df):
     """Returns the memory usage of a Pandas DataFrame in MB."""
-    mem_usage = df.memory_usage(deep=True).sum() / 1024 ** 2
+    mem_usage = df.memory_usage(deep=True).sum() / 1024**2
     print(f"DataFrame Memory Usage: {mem_usage:.2f} MB")
     return mem_usage
 

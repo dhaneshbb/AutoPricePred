@@ -1,161 +1,200 @@
-# Auto Price Prediction: Data Analysis and Predictive Modeling
+<div align="center">
+
+![Python](https://img.shields.io/badge/python-3.8+-blue.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg)
+
+# Automobile Price Prediction
+
+Machine learning regression model for predicting 1985 import vehicle prices. Achieves 91.7% test R-squared and 89.4% cross-validation R-squared with Lasso regression.
+
+</div>
 
 ---
 
-##  Table of Contents
-- [Project Overview](#-project-overview)
-- [Project Structure](#-project-structure)
-- [Key Features](#-key-features)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Results](#-results)
-- [Challenges & Solutions](#-challenges--solutions)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Contact](#-contact)
+## Overview
+
+Predicts automobile prices from 25 vehicle specification features (brand, engine, body design, performance). Addresses data leakage, missing values (18%), multicollinearity (VIF > 16,000), outliers (10% of samples), and high-cardinality categoricals.
+
+**Final Model:** Lasso Regression (alpha=10.0)
+
+- Test: R-squared = 0.917, RMSE = $1,987
+- Cross-validation: R-squared = 0.894 +/- 0.027
+- Features: 42 (6 PCA + 36 categorical), 29 non-zero coefficients
+- Overfitting gap: 3.3%
+
+See [Model_Comparison_Report.md](reports/Model_Comparison_Report.md) for why Lasso was selected over XGBoost despite 16% higher test error.
 
 ---
 
-##  Project Overview
+## Quick Start
 
-**Objective**: Build a predictive model to understand how car prices vary with design and engineering features, enabling strategic adjustments in automotive design and pricing.  
+### Installation
 
-**Dataset**: [1985 Auto Imports Database](https://d3ilbtxij3aepc.cloudfront.net/projects/CDS-Capstone-Projects/PRCP-1017-AutoPricePred.zip) with 205 instances and 26 attributes.  
-
-**Key Tasks**:  
-1. **Data Analysis**: Clean, explore, and preprocess data.  
-2. **Predictive Modeling**: Train and compare regression models.  
-3. **Insight Generation**: Translate model results into actionable business strategies.  
-
----
-
-##  Project Structure
-
-```
-├── data
-│   ├── raw                   # Raw datasets (auto_imports.csv)
-│   └── processed             # Processed training/testing splits
-├── docs                      # Problem statement and documentation
-├── notebooks                 # Jupyter notebooks for analysis and modeling
-├── report                    # Final Report.md and supporting files
-├── results
-│   ├── 365csv pre-analysis   # EDA outputs (statistics, visualizations)
-│   ├── figures               # Saved plots (boxplots, histograms)
-│   └── models                # Serialized models (final_lasso_model.joblib)
-├── src                       # Source code modules (utils, statistical_analysis, model_evaluation)
-├── LICENSE
-├── README.md
-└── requirements.txt          # Python dependencies
+```bash
+pip install -r requirements.txt
 ```
 
+### Load Trained Model
+
+```python
+import joblib
+model = joblib.load('models/final_lasso_model.joblib')
+predictions = model.predict(X_new)  # Requires 42 engineered features
+```
+
+### Run Full Pipeline
+
+Open `notebooks/auto-price-prediction.ipynb` for complete data preparation, modeling, and evaluation workflow.
+
+## Dataset
+
+| Property | Details |
+|----------|---------|
+| **Source** | 1985 Auto Imports Database (UCI ML Repository) |
+| **Samples** | 200 vehicles (205 original, 5 removed) |
+| **Features** | 26 attributes (25 predictors + price) |
+| **Split** | 158 train / 40 test (stratified) |
+
+See [data/raw/dataset-info.txt](data/raw/dataset-info.txt) for full metadata.
+
+## Project Structure
+
+**Core directories:**
+- `data/raw/` - Original dataset (auto_imports.csv)
+- `data/processed/train-test/` - Train/test split
+- `notebooks/` - Full analysis pipeline (auto-price-prediction.ipynb)
+- `src/` - Reusable modules (utils, statistical analysis, model evaluation)
+- `models/` - Trained model artifacts (final_lasso_model.joblib)
+- `reports/` - Detailed analysis reports
+
+## Working with the Notebook
+
+**Import pattern used:**
+The notebook imports functions from src/ modules using:
+```python
+from src.utils import memory_usage, dataframe_memory_usage
+from src.statistical_analysis import normality_test_with_skew_kurt, spearman_correlation_with_target
+from src.model_evaluation import evaluate_regression_model, hyperparameter_tuning
+```
+
+**Running analysis:**
+The notebook contains the full ML pipeline. Execute cells sequentially for:
+1. Data loading and cleaning
+2. Statistical analysis (normality tests, correlation)
+3. Feature engineering (PCA on numerical features)
+4. Model comparison (10 algorithms tested)
+5. Hyperparameter tuning (5-fold GridSearchCV)
+6. Final model selection and persistence
+
+## Model Training Workflow
+
+**Base model evaluation:**
+```python
+from src.model_evaluation import evaluate_regression_model
+
+metrics = evaluate_regression_model(model, X_train, y_train, X_test, y_test)
+# Returns: MAE, MSE, RMSE, R², Adjusted R², MSLE, MAPE, CV R², Training R², Overfit, Training Time
+```
+
+**Hyperparameter tuning:**
+```python
+from src.model_evaluation import hyperparameter_tuning
+
+best_models, best_params, times = hyperparameter_tuning(
+    models={'Lasso': Lasso()},
+    param_grids={'Lasso': {'alpha': [0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000]}},
+    X_train=X_train,
+    y_train=y_train,
+    scoring_metric='neg_mean_squared_error',
+    cv_folds=5
+)
+```
+
+## Statistical Analysis Functions
+
+**Normality testing:**
+```python
+from src.statistical_analysis import normality_test_with_skew_kurt
+
+normal_df, not_normal_df = normality_test_with_skew_kurt(df)
+# Uses Shapiro-Wilk (n<=5000) or Kolmogorov-Smirnov (n>5000)
+```
+
+**Multicollinearity detection:**
+```python
+from src.statistical_analysis import calculate_vif
+
+vif_data, high_vif_features = calculate_vif(data, exclude_target='TARGET', multicollinearity_threshold=5.0)
+# Returns VIF scores and features exceeding threshold
+```
+
+**Spearman correlation:**
+```python
+from src.statistical_analysis import spearman_correlation_with_target
+
+corr_data = spearman_correlation_with_target(
+    data,
+    non_normal_cols=['col1', 'col2'],
+    target_col='TARGET',
+    plot=True,
+    table=True
+)
+```
+
+## Model Persistence
+
+**Loading the final model:**
+```python
+import joblib
+model = joblib.load('models/final_lasso_model.joblib')
+predictions = model.predict(X_new)
+```
+
+## Key Design Decisions
+
+**Model selection criteria (weighted):**
+1. Generalization (CV R² stability) - 40%
+2. Accuracy (Test RMSE/R²) - 30%
+3. Stability (overfitting gap) - 20%
+4. Efficiency (training time, interpretability) - 10%
+
+**Why Lasso over XGBoost:**
+- XGBoost achieved lower test RMSE (1,663 vs 1,987) but showed 8.3-point CV-test gap vs Lasso's 2.3-point gap
+- Lasso provides interpretability (29 sparse coefficients) vs XGBoost black box
+- Training: 11.5x faster (0.014s vs 0.161s)
+- Inference: 600x faster operations
+- Trade-off: Accept 2.5% higher error for 4.1 points better CV R² and full transparency
+
+## Reports
+
+Detailed analysis in `reports/`:
+
+- [Complete_Data_Analysis_Report.md](reports/Complete_Data_Analysis_Report.md) - Full methodology, statistical analysis, and results
+- [Model_Comparison_Report.md](reports/Model_Comparison_Report.md) - Model selection rationale and performance comparison
+- [Challenges_Report.md](reports/Challenges_Report.md) - Technical challenges and solutions
+- [GALLERY.md](results/figures/GALLERY.md) - Visualizations
+
+## Development
+
+### Code Quality
+
+```bash
+# Format code
+black .
+isort .
+
+# Run pre-commit hooks
+pre-commit run --all-files
+```
+
+### Pre-commit Hooks
+
+- black (88-char lines)
+- isort (black-compatible)
+- nbqa-black (notebooks)
+- Validation (YAML, JSON, trailing whitespace)
+
 ---
 
-##  Key Features
 
-- **Data Preprocessing**:  
-  - Missing value imputation (median/mode).  
-  - Outlier capping using IQR and domain knowledge.  
-  - PCA for dimensionality reduction (95% variance retained).  
-
-- **Model Development**:  
-  - Compared 7 models: **Lasso**, **XGBoost**, **Gradient Boosting**, etc.  
-  - Hyperparameter tuning with cross-validation.  
-
-- **Deployment-Ready**:  
-  - Best model: **Lasso Regression** (R² = 0.917, RMSE = 1,987).  
-  - Interpretable coefficients for business strategy (e.g., BMW adds $7,347 to price).  
-
----
-
-##  Installation
-
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/dhaneshbb/AutoPricePred.git
-   cd AutoPricePred
-   ```
-
-2. Install dependencies:  
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Launch Jupyter Notebook:  
-   ```bash
-   jupyter notebook
-   ```
-
----
-
-##  Usage
-
-1. **Data Analysis**:  
-   - Run `AutoPricePred_Analysis.ipynb` to explore data cleaning, EDA, and visualizations.  
-
-2. **Model Training**:  
-   - The notebook includes code for model comparison, hyperparameter tuning, and saving the best model.  
-
-3. **Inference**:  
-   ```python
-   import joblib
-   model = joblib.load('models/final_lasso_model.joblib')
-   prediction = model.predict([input_features])
-   ```
-
----
-
-##  Results
-
-| Model               | Test RMSE | Test R² | Training Time (s) | Overfit (Δ R²) |
-|---------------------|-----------|---------|-------------------|----------------|
-| **Lasso (α=10)**    | 1,987     | 0.917   | 0.019             | 0.033          |
-| XGBoost             | 1,663     | 0.942   | 0.143             | 0.052          |
-| Gradient Boosting   | 1,842     | 0.928   | 0.118             | 0.051          |
-
-### Final Model: Lasso Regression (α=10)
-- **Rationale**: Balances interpretability, speed, and generalizability.
-- **Key Drivers**: Luxury brands (`make_bmw`, `make_mercedes-benz`), engine location, and PCA components.
-- **Performance**:
-  
-| Metric               | Value          |
-|----------------------|----------------|
-| Test R²              | 0.917          |
-| Test RMSE            | 1,987          |
-| Cross-Validation R²  | 0.899 ± 0.027  |
-
-**Key Insights**:  
-- Luxury brands (BMW, Mercedes) command significant price premiums.  
-- Rear-engine vehicles are associated with higher prices.  
-- Vehicle size/power (PCA_1) is a critical pricing factor.  
-
----
-
-##  Challenges & Solutions
-
-| Challenge               | Solution                              |
-|-------------------------|---------------------------------------|
-| Missing Values (18%) with data Leakage     | Median/mode imputation + column drop. |
-| Multicollinearity        | PCA and VIF-based feature removal.    |
-| High Cardinality         | Regularization (Lasso) for sparsity.  |
-| Model Overfitting        | Cross-validation and hyperparameter tuning. |
-
----
-
-##  Contributing
-
-Contributions are welcome!  
-1. Fork the repository.  
-2. Create a feature branch: `git checkout -b feature/new-feature`.  
-3. Commit changes: `git commit -m 'Add new feature'`.  
-4. Push to the branch: `git push origin feature/new-feature`.  
-5. Submit a pull request.  
-
----
-
-##  License
-
-This project is licensed under the terms of the MIT License. See [LICENSE](LICENSE) for details. 
-
----
-
-**Made with  using [insightfulpy](https://github.com/dhaneshbb/insightfulpy)**
+- MIT License - Copyright (c) 2025 Dhanesh B. B.
+- GitHub: [https://github.com/dhaneshbb](https://github.com/dhaneshbb)
