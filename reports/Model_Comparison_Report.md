@@ -2,7 +2,6 @@
 
 **Project:** Auto Price Prediction Using 1985 Auto Imports Database
 **Evaluation Dataset:** 158 training, 40 test samples | 42 features (6 PCA + 36 categorical)
-**Date:** November 2025
 
 ---
 
@@ -385,3 +384,4 @@ print(f"CV R²: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
 ---
 
 **End of Model Comparison Report**
+
