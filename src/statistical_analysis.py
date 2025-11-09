@@ -1,21 +1,12 @@
-"""
-Statistical analysis functions for data exploration and correlation analysis.
-"""
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from IPython.display import display
 from scipy.stats import kstest, kurtosis, shapiro, skew, spearmanr
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 
 def normality_test_with_skew_kurt(df):
-    """
-    Test normality of numerical columns using Shapiro-Wilk or Kolmogorov-Smirnov tests.
-    Also calculates skewness and kurtosis.
-    """
     normal_cols = []
     not_normal_cols = []
     for col in df.select_dtypes(include=[np.number]).columns:
@@ -51,7 +42,9 @@ def normality_test_with_skew_kurt(df):
         )
     )
     not_normal_df = (
-        pd.DataFrame(not_normal_cols).sort_values(by="p_value", ascending=False)
+        pd.DataFrame(not_normal_cols).sort_values(
+            by="p_value", ascending=False
+        )  # Sort by p-value descending (near normal to not normal)
         if not_normal_cols
         else pd.DataFrame(
             columns=["Column", "Test", "Statistic", "p_value", "Skewness", "Kurtosis"]
@@ -59,7 +52,7 @@ def normality_test_with_skew_kurt(df):
     )
     print("\nNormal Columns (p > 0.05):")
     display(normal_df)
-    print("\nNot Normal Columns (p ≤ 0.05) - Sorted from Near Normal to Not Normal:")
+    print("\nNot Normal Columns (p <= 0.05) - Sorted from Near Normal to Not Normal:")
     display(not_normal_df)
     return normal_df, not_normal_df
 
@@ -67,9 +60,6 @@ def normality_test_with_skew_kurt(df):
 def spearman_correlation_with_target(
     data, non_normal_cols, target_col="TARGET", plot=True, table=True
 ):
-    """
-    Calculate Spearman correlation between non-normal columns and target variable.
-    """
     if not pd.api.types.is_numeric_dtype(data[target_col]):
         raise ValueError(
             f"Target column '{target_col}' must be numeric. Please encode it before running this test."
@@ -100,7 +90,7 @@ def spearman_correlation_with_target(
                 f"- {feature}: Correlation={stats['Spearman Coefficient']:.4f}, p-value={stats['p-value']:.4f}"
             )
     if plot:
-        plt.figure(figsize=(20, 8))
+        plt.figure(figsize=(20, 8))  # Increase figure width to prevent label overlap
         sns.barplot(
             x=correlation_data.index,
             y="Spearman Coefficient",
@@ -111,8 +101,8 @@ def spearman_correlation_with_target(
         plt.title(f"Spearman Correlation with Target ('{target_col}')", fontsize=16)
         plt.xlabel("Features", fontsize=14)
         plt.ylabel("Spearman Coefficient", fontsize=14)
-        plt.xticks(rotation=45, ha="right", fontsize=10)
-        plt.subplots_adjust(bottom=0.3)
+        plt.xticks(rotation=45, ha="right", fontsize=10)  # Rotate labels for clarity
+        plt.subplots_adjust(bottom=0.3)  # Add space below the plot for labels
         plt.tight_layout()
         plt.show()
     return correlation_data
@@ -121,9 +111,6 @@ def spearman_correlation_with_target(
 def spearman_correlation(
     data, non_normal_cols, exclude_target=None, multicollinearity_threshold=0.8
 ):
-    """
-    Calculate Spearman correlation matrix and identify multicollinear pairs.
-    """
     if non_normal_cols.empty:
         print(
             "\nNo non-normally distributed numerical columns found. Exiting Spearman Correlation."
@@ -155,8 +142,8 @@ def spearman_correlation(
         print("No multicollinear pairs found.")
     annot_matrix = spearman_corr_matrix.round(2).astype(str)
     num_vars = len(selected_columns)
-    fig_size = max(min(24, num_vars * 1.2), 10)
-    annot_font_size = max(min(10, 200 / num_vars), 6)
+    fig_size = max(min(24, num_vars * 1.2), 10)  # Keep reasonable bounds
+    annot_font_size = max(min(10, 200 / num_vars), 6)  # Smaller font for more variables
     plt.figure(figsize=(fig_size, fig_size * 0.75))
     sns.heatmap(
         spearman_corr_matrix,
@@ -177,9 +164,7 @@ def spearman_correlation(
 
 
 def calculate_vif(data, exclude_target="TARGET", multicollinearity_threshold=5.0):
-    """
-    Calculate Variance Inflation Factor (VIF) for numerical features.
-    """
+    # Select only numeric columns, exclude target, and drop rows with missing values
     numeric_data = (
         data.select_dtypes(include=[np.number])
         .drop(columns=[exclude_target], errors="ignore")

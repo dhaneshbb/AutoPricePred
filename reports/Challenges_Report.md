@@ -1,5 +1,8 @@
 # Report on Challenges Faced: Automobile Price Prediction
 
+**Report Date:** March 01, 2025
+**Revised:** November 7, 2025
+
 **Project:** Auto Price Prediction Using 1985 Auto Imports Database
 **Dataset:** 205 instances, 26 attributes (200 retained after preprocessing)
 

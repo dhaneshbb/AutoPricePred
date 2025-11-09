@@ -1,7 +1,3 @@
-"""
-Utility functions for memory management and general operations.
-"""
-
 import gc
 import os
 

@@ -1,11 +1,8 @@
-"""
-Model evaluation and hyperparameter tuning functions for machine learning.
-"""
-
 import time
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn as sns
 from scipy import stats
 from sklearn.metrics import (
@@ -19,9 +16,6 @@ from sklearn.model_selection import GridSearchCV, cross_val_score, learning_curv
 
 
 def evaluate_regression_model(model, X_train, y_train, X_test, y_test):
-    """
-    Evaluate a regression model and return performance metrics.
-    """
     start_time = time.time()
     model.fit(X_train, y_train)
     training_time = time.time() - start_time
@@ -47,21 +41,18 @@ def evaluate_regression_model(model, X_train, y_train, X_test, y_test):
         "MAE": mae,
         "MSE": mse,
         "RMSE": rmse,
-        "R²": r2,
-        "Adjusted R²": adjusted_r2,
+        "R2": r2,
+        "Adjusted R2": adjusted_r2,
         "MSLE": msle,
         "MAPE": mape,
-        "Cross-Validation R²": cv_r2,
-        "Training R²": r2_train,
+        "Cross-Validation R2": cv_r2,
+        "Training R2": r2_train,
         "Overfit": overfit,
         "Training Time (seconds)": round(training_time, 4),
     }
 
 
 def visualize_model_performance(model, X_train, y_train, X_test, y_test):
-    """
-    Visualize model performance with various plots.
-    """
     y_pred_train = model.predict(X_train)
     y_pred_test = model.predict(X_test)
     residuals_train = y_train - y_pred_train
@@ -77,7 +68,7 @@ def visualize_model_performance(model, X_train, y_train, X_test, y_test):
     axes[0, 0].plot(train_sizes, test_mean, "o-", label="Test Score")
     axes[0, 0].set_title("Learning Curve")
     axes[0, 0].set_xlabel("Training Samples")
-    axes[0, 0].set_ylabel("R² Score")
+    axes[0, 0].set_ylabel("R2 Score")
     axes[0, 0].legend()
     axes[0, 1].scatter(y_test, y_pred_test, alpha=0.5, color="blue")
     axes[0, 1].plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], "--r")
@@ -111,9 +102,6 @@ def hyperparameter_tuning(
     scoring_metric="neg_mean_squared_error",
     cv_folds=5,
 ):
-    """
-    Perform hyperparameter tuning using GridSearchCV for multiple models.
-    """
     best_models = {}
     best_params = {}
     execution_times = {}

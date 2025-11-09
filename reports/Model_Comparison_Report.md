@@ -1,5 +1,8 @@
 # Model Comparison Report: Automobile Price Prediction
 
+**Report Date:** March 01, 2025
+**Revised:** November 7, 2025
+
 **Project:** Auto Price Prediction Using 1985 Auto Imports Database
 **Evaluation Dataset:** 158 training, 40 test samples | 42 features (6 PCA + 36 categorical)
 
@@ -384,4 +387,3 @@ print(f"CV R²: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
 ---
 
 **End of Model Comparison Report**
-

@@ -1,5 +1,8 @@
 # Automobile Price Prediction: Complete Data Analysis Report
 
+**Report Date:** March 01, 2025
+**Revised:** November 7, 2025
+
 **Project:** Auto Price Prediction Using 1985 Auto Imports Database
 **Dataset:** 205 instances, 26 attributes
 **Final Model:** Lasso Regression (alpha=10) with R² = 0.917, RMSE = 1,987
@@ -1099,4 +1102,3 @@ This project extensively utilized the [insightfulpy](https://github.com/dhaneshb
 ---
 
 **End of Report**
-
